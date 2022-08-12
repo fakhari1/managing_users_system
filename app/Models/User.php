@@ -6,30 +6,18 @@ namespace App\Models;
 use App\Jobs\SendEmail;
 use App\Mail\ResetPassword;
 use App\Mail\VerificationEmail;
+use App\Services\Authorization\Traits\HasRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Services\Authorization\Traits\HasPermission;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasPermission, HasRole;
 
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'phone_number'
-    ];
-
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    protected $guarded = [];
 
     public function sendEmailVerificationNotification()
     {

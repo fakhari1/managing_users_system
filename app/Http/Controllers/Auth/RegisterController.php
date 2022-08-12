@@ -41,7 +41,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'phone_number' => $data['phone']
+            'phone_number' => $data['phone_number']
         ]);
     }
 
@@ -57,7 +57,7 @@ class RegisterController extends Controller
         // login
         auth()->login($user);
 
-        event(new UserRegistered($user));
+//        event(new UserRegistered($user));
 
         // redirect
         return redirect()->to(RouteServiceProvider::DASHBOARD);

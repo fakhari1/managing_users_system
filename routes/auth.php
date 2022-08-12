@@ -7,7 +7,7 @@ use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 
-Route::prefix('auth')->group(function () {
+Route::middleware([])->group(function () {
     Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register.form');
     Route::post('register', [RegisterController::class, 'register'])->name('register');
 

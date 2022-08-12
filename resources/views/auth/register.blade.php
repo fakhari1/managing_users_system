@@ -44,7 +44,7 @@
                         <div class="row form-group mb-3">
                             <label for="phone" class="col-3 col-sm-2 form-label">{{ __('auth.phone') }}</label>
                             <div class="col-9 col-sm-10">
-                                <input type="text" name="phone" id="phone" class="form-control">
+                                <input type="text" name="phone_number" id="phone" class="form-control">
                             </div>
                         </div>
                         <div style="margin-right: 13%">

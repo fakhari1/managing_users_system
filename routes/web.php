@@ -1,8 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\URL;
-use Carbon\Carbon;
+use App\Models\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,13 +14,12 @@ use Carbon\Carbon;
 |
 */
 
-require 'auth.php';
+require __DIR__ . "/auth.php";
 
 Route::get('/', function () {
-    return view('welcome');
-//    $url = URL::temporarySignedRoute('test', Carbon::now()->addMinutes(60), ['id' => 12]);
-//    dd($url);
+    $role = Role::find(1)->attachPermissions('delete users', 'delete posts');
+    auth()->user()->attachRoles('admin');
+    dd(auth()->user()->can('delete users', 'delete posts', 'delete images'));
 });
 
 Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
-Route::get('verify', fn() => 'hi')->name('test');
