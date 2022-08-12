@@ -18,6 +18,7 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable, HasPermission, HasRole;
 
     protected $guarded = [];
+    protected $appends = ['roles_labels'];
 
     public function sendEmailVerificationNotification()
     {
@@ -32,5 +33,16 @@ class User extends Authenticatable
     public function sendPasswordResetNotification($token)
     {
         SendEmail::dispatch($this, new ResetPassword($this, $token));
+    }
+
+    public function getRolesLabelsAttribute()
+    {
+        $labels = "<div class='d-flex justify-content-center flex-wrap'>";
+        foreach ($this->roles as $key => $role) {
+            $tag = "<span class='btn btn-sm btn-outline-primary my-1 mx-1 w-60-px'>{$role->persian_name}</span>";
+            $labels .= $tag;
+        }
+        $labels .= "</div>";
+        return $labels;
     }
 }

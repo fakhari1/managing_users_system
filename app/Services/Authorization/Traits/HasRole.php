@@ -3,6 +3,7 @@
 namespace App\Services\Authorization\Traits;
 
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Support\Arr;
 
 trait HasRole
@@ -54,8 +55,10 @@ trait HasRole
         return Role::query()->whereIn('name', Arr::flatten($roles))->get();
     }
 
-    public function hasRole(string $role)
+    public function hasRole(Role $role)
     {
-        return $this->roles()->exists($role);
+        return $this->roles()->where('name', '=', $role->name)->exists();
     }
+
+
 }

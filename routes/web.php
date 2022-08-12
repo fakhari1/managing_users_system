@@ -1,25 +1,30 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Models\Role;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoleController;
 
 require __DIR__ . "/auth.php";
 
 Route::get('/', function () {
-    $role = Role::find(1)->attachPermissions('delete users', 'delete posts');
-    auth()->user()->attachRoles('admin');
-    dd(auth()->user()->can('delete users', 'delete posts', 'delete images'));
+    return view('welcome');
 });
 
-Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+Route::middleware('auth')->prefix('dashboard')->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('dashboard');
+
+    Route::prefix('users')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('users');
+
+        Route::get('{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+        Route::patch('{user}/update', [UserController::class, 'update'])->name('users.update');
+
+        Route::delete('{user}/delete', [UserController::class, 'destroy'])->name('users.delete');
+    });
+
+    Route::prefix('roles')->group(function () {
+        Route::get('/', [RoleController::class, 'index'])->name('roles');
+
+    });
+});
