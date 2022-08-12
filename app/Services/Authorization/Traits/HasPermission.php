@@ -49,18 +49,15 @@ trait HasPermission
 
     public function hasPermission(Permission $permission)
     {
-        return $this->hasPermissionsThroughRoles($permission) || $this->permissions()->where('name', '=', $permission->name)->exists();
+        return /*$this->hasPermissionsThroughRoles($permission) ||*/ $this->permissions->contains($permission);
 //        return $this->permissions->contains('name', $permission);
     }
 
     protected function hasPermissionsThroughRoles(Permission $permission)
     {
-        $permission_roles = $permission->roles()->get();
-
-        foreach ($permission_roles as $key => $role) {
-            if ($this->roles->contains($role)) return true;
+        foreach ($permission->roles as $role) {
+            return $this->roles->contains($role);
         }
-
         return false;
     }
 }

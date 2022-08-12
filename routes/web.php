@@ -26,5 +26,11 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::prefix('roles')->group(function () {
         Route::get('/', [RoleController::class, 'index'])->name('roles');
 
+        Route::post('create', [RoleController::class, 'store'])->name('roles.store');
+
+        Route::get('{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
+        Route::patch('{role}/update', [RoleController::class, 'update'])->name('roles.update');
+
+        Route::delete('{role}/delete', [RoleController::class, 'destroy'])->name('roles.delete');
     });
 });
